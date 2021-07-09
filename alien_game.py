@@ -1,5 +1,4 @@
 import sys
-from typing_extensions import TypeVarTuple
 
 import pygame
 
@@ -13,10 +12,8 @@ class AlienGame:
         """Initialize the game and create game resources."""
         pygame.init()
         self.settings = Settings()
-        self.ship = Ship(self)
-        
-        
         self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
+        self.ship = Ship(self)
         pygame.display.set_caption("Alien Invasion")
     
     def run_game(self):
@@ -34,8 +31,10 @@ class AlienGame:
                 if event.type == pygame.QUIT:
                     sys.exit()
                 elif event.type == pygame.KEYDOWN:
+                    print("keydown")
                     self._check_keydown_events(event)
-                elif event == pygame.KEYUP:
+                elif event.type == pygame.KEYUP:
+                    print("keyup")
                     self._check_keyup_events(event)
                         
     def _check_keyup_events(self, event):
@@ -53,12 +52,12 @@ class AlienGame:
             self.ship.moving_right = True
         elif event.key == pygame.K_LEFT:
             #move the ship[ to the left
-            self.ship.moving_left = True       
+            self.ship.moving_left = True
         elif event.key == pygame.K_q:
             sys.exit()
     def _update_screen(self):
         """Update images on the screen and flip to the new screen"""
-        self.screen.fell(self.settings.bg_color)
+        self.screen.fill(self.settings.bg_color)
         self.ship.blitme()
         
         pygame.display.flip()
