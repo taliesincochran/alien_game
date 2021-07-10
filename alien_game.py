@@ -24,6 +24,11 @@ class AlienGame:
             self._check_events()
             self.ship.update()
             self.bullets.update()
+            # Delete bullets when they exit the screeen
+            for bullet in self.bullets.copy():
+                if bullet.rect.bottom <= 0:
+                    self.bullets.remove(bullet)
+            print(len(self.bullets))                
             self._update_screen()
             
             
@@ -40,20 +45,20 @@ class AlienGame:
                         
     def _check_keyup_events(self, event):
         """Respond to keyup events"""
-        if event.key == pygame.K_RIGHT:
+        if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
             self.ship.moving_right = False
-        elif event.key == pygame.K_LEFT:
+        elif event.key == pygame.K_LEFT or event.key == pygame.K_a:
             self.ship.moving_left = False 
     
     def _check_keydown_events(self, event):
         """Respond to keydown events"""
-        if event.key == pygame.K_RIGHT:
+        if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
             #move the ship to the right
             self.ship.moving_right = True
-        elif event.key == pygame.K_LEFT:
-            #move the ship[ to the left
+        elif event.key == pygame.K_LEFT or event.key == pygame.K_a:
+            #move the ship to the left
             self.ship.moving_left = True
-        elif event.key == pygame.K_SPACE:
+        elif event.key == pygame.K_SPACE or event.key == pygame.K_w or event.key == pygame.K_s:
             self._fire_bullet()
         # Make sure you can exit the game
         elif event.key == pygame.K_q:
@@ -61,8 +66,10 @@ class AlienGame:
             
     def _fire_bullet(self):
         """Create a new bullet and add it to the bullet groups"""
-        new_bullet = Bullet(self)
-        self.bullets.add(new_bullet)
+        if len(self.bullets) < self.settings.bullet_limit:
+            new_bullet = Bullet(self)
+            self.bullets.add(new_bullet)
+            
         
     def _update_screen(self):
         """Update images on the screen and flip to the new screen"""
