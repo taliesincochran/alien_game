@@ -29,7 +29,8 @@ class AlienGame:
             self._check_events()
             self.ship.update()
             self._update_bullets()
-            self._update_screen()            
+            self._update_aliens()         
+            self._update_screen()   
             
     
     def _check_events(self):
@@ -87,9 +88,13 @@ class AlienGame:
         for bullet in self.bullets.copy():
             if bullet.rect.bottom <= 0:
                 self.bullets.remove(bullet)
-        print(len(self.bullets))                
         self._update_screen()
-    
+        
+    def _update_aliens(self):
+        """"Check if the fleet is at the edge, then update positions of alien ships"""
+        self._check_fleet_edges()
+        self.aliens.update()
+        
     def _create_fleet(self):
         """"Create a fleet of alien ships"""
         alien = Alien(self)
@@ -107,7 +112,21 @@ class AlienGame:
         self.aliens.add(alien)
         # create the first row of aliens
         self.aliens.add(alien)
+    
+    def _check_fleet_edges(self):
+        """Change direction if aliens reach the edge"""
+        for alien in self.aliens.sprites():
+            if alien.check_edges():
+                self._change_fleet_direction()
+                break
             
+    def _change_fleet_direction(self):
+        """Drop the entire fleet and change direction"""
+        for alien in self.aliens.sprites():
+            alien.rect.y += self.settings.fleet_drop_speed
+        self.settings.fleet_direction *= -1
+        
+        
 if __name__ == '__main__':
     #Makes a game instance and runs the game
     ai = AlienGame()
