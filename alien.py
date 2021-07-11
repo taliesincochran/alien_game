@@ -12,7 +12,7 @@ class Alien(Sprite):
         
         # Load the image of the alien ship and set its rect attribute
         self.image = pygame.image.load('images/alien.bmp')
-        self.rect = self.image.get.rect()
+        self.rect = self.image.get_rect()
         
         # Start each ne alien ship at near the top left of the screen
         self.rect.x = self.rect.width
