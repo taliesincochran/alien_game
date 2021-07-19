@@ -129,6 +129,7 @@ class AlienGame:
             
     def _change_fleet_direction(self):
         """Drop the entire fleet and change direction"""
+        print(self.settings.fleet_direction)
         for alien in self.aliens.sprites():
             alien.rect.y += self.settings.fleet_drop_speed
         self.settings.fleet_direction *= -1
